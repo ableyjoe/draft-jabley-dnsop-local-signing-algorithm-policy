@@ -33,6 +33,14 @@ author:
 normative:
 
 informative:
+  FIPS204:
+    title: "Module-Lattice-Based Digital Signature Standard"
+    author:
+      - org: "National Institute of Standards and Technology (NIST)"
+    date: 2024-08
+    seriesinfo:
+      FIPS: PUB 204
+    target: https://doi.org/10.6028/NIST.FIPS.204
 
 --- abstract
 
@@ -53,7 +61,7 @@ been applied to response validation.
 
 --- middle
 
-# Introduction
+# Introduction {#intro}
 
 DNS Security Extensions (DNSSEC) are specified in {{!RFC 9364}}.
 
@@ -88,8 +96,11 @@ follows:
 >    resolver is also vulnerable to malicious insertion of gibberish
 >    signatures.
 
-This document describes one such "more restrictive policy" relating to the
-introduction of post-quantum-safe algorithms in DNSSEC.
+This document describes one such "more restrictive policy" relating
+to the introduction of quantum-safe algorithms in DNSSEC, and defines
+a signal that can be used to inform a relying party that such a
+policy is in place.
+
 
 # Conventions and Definitions
 
@@ -97,10 +108,102 @@ introduction of post-quantum-safe algorithms in DNSSEC.
 
 This document uses DNS terminology as described in {{!RFC9499}}.
 
+
+# Deployment of Quantum-Safe Algorithms in DNSSEC {#local_policy}
+
+Certain cryptographic algorithms have been identified as being to
+weak to withstand cryptanalytic attack by a quantum computer.
+Examples of such algorithms used in DNSSEC are ECDSA Curve P-256
+with SHA-256 {{?RFC6605}} and RSA/SHA-256 {{?RFC5702}}. In this
+document we refer to such algorithms as quantum-unsafe.
+
+However, there exist other algorithms that have been classified as
+quantum-safe by some authorities, such as Module-Lattice-Based
+Digital Signature Standard {?FIPS204} whose use in DNSSEC as ML-DSA-44
+is described in {{?I-D.westerbaan-dnssec-mldsa}}.
+
+Quantum-safe algorithms are not widely-deployed in DNSSEC at the
+time of writing, and there is no known prediction of their rapid
+deployment. DNSSEC validators are required to ignore signatures
+made using algorithms that they do not support.
+
+To publish data in the DNS with broad integrity protection for
+relying parties that includes the use of quantum-safe algorithms,
+it is therefore necessary to include multiple signatures over the
+subject data: signatures with widely-deployed, quantum-unsafe
+algorithms for the legacy population of validators and also signatures
+with poorly-deployed, quantum-safe algorithms intended for validators
+that support them.  Signing with quantum-safe algorithms alone would
+afford no integrity protection at all to the legacy validator
+population.
+
+The classsification of algorithms as quantum-safe or quantum-unsafe
+imagines a future in which the ability to validate a signature made
+by a quantum-unsafe algorithm no longer provides sufficient confidence
+that the signed data is authentic. However, a signature over the same
+data by a quantum-safe algorithm would provide that confidence, to
+a validator that is equipped to use it.
+
+Such a validator might therefore implement a local policy to ignore
+signatures made using quantum-unsafe algorithms when signatures
+made by quantum-safe algorithms are also available for the same
+subject data. Such a policy would treat data with a valid quantum-safe
+signature as authentic regardless of the validity of any other
+signature, and treat data with an invalid quantum-safe signature
+as inauthentic even if valid signatures made by quantum-unsafe
+algorithms are available.
+
+The operator of a security-aware resolver that adopted this local
+policy would naturally pay close attention to the concerns expressed
+in {{?Section 4.2.1.2 of RFC6781}}.
+
+# Signals to Relying Parties
+
+The local policy described in {{local_policy}} would have the effect
+of suppressing DNS responses that might otherwise have been returned
+to a client in the specific case where validation of a quantum-unsafe
+signature succeded while validation of a quantum-safe signature over
+the same data did not.
+
+To the end-user, this is an example of DNS response filtering and
+existing mechanisms described in {{!I-D.ietf-dnsop-filtering-transparency}}
+can be used. For example, a negative DNS response that follows a
+failure to validate according to this local policy mnight include
+an Extended DNS Error Code 6 ("DNSSEC Bogus") {{!RFC8914}} and
+an EXTRA-TEXT Field "fbds" which is an array of appropriate
+references that describe the local policy:
+
+~~~
+{
+  "fbds": [
+    {
+      "db": "resolver-operator-reference",
+      "id": "quantum-safe-validation-policy"
+    }
+  ]
+}
+~~~
+
+
 # Security Considerations
 
-TODO Security
+This document provides an example of local policy relating to DNSSEC
+validation that could be employed by the operator of a security-aware
+resolver to address weaknesses in quantum-unsafe signing algorithms.
 
+Local policy is often no friend of interoperability. In this case
+the parties affected by local policy decisions might well have made
+an informed decision to use a resolver with known local policy, in
+which case resulting differences in validation behaviour will
+presumably be well-aligned with the relying parties. However,
+particular resolvers are also commonly assigned to devices without
+an informed decision-making process with an end user, in which case
+differences in behaviour might be surprising.
+
+The Extended DNS Error described in {{ede}}} provides a mechanism
+for a resolver operator to communicate the existence of local policy
+to a client such that the reason for the different behaviour can
+be better understood.
 
 # IANA Considerations
 
@@ -112,5 +215,5 @@ This document has no IANA actions.
 # Acknowledgments
 {:numbered="false"}
 
-TODO acknowledge.
+Your name here, etc.
 
