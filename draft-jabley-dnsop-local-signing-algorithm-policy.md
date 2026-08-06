@@ -45,19 +45,15 @@ informative:
 --- abstract
 
 Security-aware resolvers validate signatures, where available, in
-order to protect their clients from data that is known to be
-inauthentic. DNSSEC treats all algorithms as equal when it comes
-to validation, such that any single valid signature is sufficient
-proof of authenticity, and that data is only to be judged to be
-inauthentic if all available signatures are found to be invalid.
-
-However, a resolver might have a different local policy, e.g. to
-interpret a failure to validate a signature made with an algorithm
-that is considered to be post-quantum-safe as evidence of inauthentic
-data regardless of whether a valid signature by a weaker, non-PQ-safe
-algorithm also exists.  This document discusses such local policy
-and provides a means to indicate to a client that local policy has
-been applied to response validation.
+order to protect their clients from inauthentic data.  DNSSEC treats
+all algorithms as equal when it comes to validation, such that a
+single valid signature is considered sufficient proof of authenticity,
+and that data is only to be judged to be inauthentic if all available
+signatures are found to be invalid. However, a resolver might have
+a different local policy, e.g. in its handling of quantum-safe
+signatures.  This document discusses such local policy and describes
+a means to indicate to a client that specific local policy has been
+applied to response validation.
 
 --- middle
 
@@ -65,8 +61,8 @@ been applied to response validation.
 
 DNS Security Extensions (DNSSEC) are specified in {{!RFC9364}}.
 
-DNSSEC provides a mechanism for a subject RRSet to have cryptographic
-signatures attached. Signatures are encoded in a DNS message alongside
+DNSSEC provides a mechanism to attach cryptographic signatures to
+a subject RRSet.  Signatures are encoded in a DNS message alongside
 the subject RRSet as an RRSIG RRSet with the same owner name, TTL
 and class. Different RRSIG RRs in such an RRSet might correspond
 to different signing keys and different signing algorithms.
@@ -97,9 +93,9 @@ follows:
 >    signatures.
 
 This document describes one such "more restrictive policy" relating
-to the introduction of quantum-safe algorithms in DNSSEC, and defines
-a signal that can be used to inform a relying party that such a
-policy is in place.
+to the introduction of quantum-safe algorithms in DNSSEC, and
+describes a signal that can be used to inform a relying party that
+such a policy is in place.
 
 
 # Conventions and Definitions
