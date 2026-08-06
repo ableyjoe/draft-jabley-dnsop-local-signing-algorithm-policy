@@ -1173,7 +1173,7 @@ applied to response validation.<a href="#section-abstract-1" class="pilcrow">¶<
             <p id="section-toc.1-1.3.1" class="keepWithNext"><a href="#section-3" class="auto internal xref">3</a>.  <a href="#name-deployment-of-quantum-safe-" class="internal xref">Deployment of Quantum-Safe Algorithms in DNSSEC</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4">
-            <p id="section-toc.1-1.4.1"><a href="#section-4" class="auto internal xref">4</a>.  <a href="#name-signals-to-relying-parties" class="internal xref">Signals to Relying Parties</a></p>
+            <p id="section-toc.1-1.4.1"><a href="#section-4" class="auto internal xref">4</a>.  <a href="#name-signals-to-clients-of-resol" class="internal xref">Signals to Clients of Resolvers</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5">
             <p id="section-toc.1-1.5.1"><a href="#section-5" class="auto internal xref">5</a>.  <a href="#name-security-considerations" class="internal xref">Security Considerations</a></p>
@@ -1310,22 +1310,23 @@ in <span><a href="https://rfc-editor.org/rfc/rfc6781#section-4.2.1.2" class="rel
 </div>
 <div id="filtered_ede">
 <section id="section-4">
-      <h2 id="name-signals-to-relying-parties">
-<a href="#section-4" class="section-number selfRef">4. </a><a href="#name-signals-to-relying-parties" class="section-name selfRef">Signals to Relying Parties</a>
+      <h2 id="name-signals-to-clients-of-resol">
+<a href="#section-4" class="section-number selfRef">4. </a><a href="#name-signals-to-clients-of-resol" class="section-name selfRef">Signals to Clients of Resolvers</a>
       </h2>
 <p id="section-4-1">The local policy described in <a href="#local_policy" class="auto internal xref">Section 3</a> would have the effect
-of suppressing DNS responses that might otherwise have been returned
-to a client in the specific case where validation of a quantum-unsafe
-signature succeded while validation of a quantum-safe signature over
-the same data did not.<a href="#section-4-1" class="pilcrow">¶</a></p>
-<p id="section-4-2">To the end-user, this is an example of DNS response filtering and
+of suppressing some positive DNS responses that might otherwise
+have been returned to a client: in particular, when validation of
+a quantum-unsafe signature over some RRSet succeded while validation
+of a quantum-safe signature over the same RRSet did not.<a href="#section-4-1" class="pilcrow">¶</a></p>
+<p id="section-4-2">To the end-user, this is indinguishable from DNS response filtering and
 existing mechanisms described in <span>[<a href="#I-D.ietf-dnsop-filtering-transparency" class="cite xref">I-D.ietf-dnsop-filtering-transparency</a>]</span>
-can be used. For example, a negative DNS response that follows a
-failure to validate according to this local policy mnight include
-an Extended DNS Error Code 6 ("DNSSEC Bogus") <span>[<a href="#RFC8914" class="cite xref">RFC8914</a>]</span> and
-include indirect references to the specific policy in force encoded in
-the EXTRA-TEXT field, for example:<a href="#section-4-2" class="pilcrow">¶</a></p>
-<div class="alignLeft art-text artwork" id="section-4-3">
+can be used to provide supporting information.<a href="#section-4-2" class="pilcrow">¶</a></p>
+<p id="section-4-3">A negative DNS response that follows a failure to validate according
+to the local policy described in <a href="#local_policy" class="auto internal xref">Section 3</a> might include an
+Extended DNS Error Code 6 ("DNSSEC Bogus") <span>[<a href="#RFC8914" class="cite xref">RFC8914</a>]</span> and include
+indirect references to the specific policy in force encoded in the
+EXTRA-TEXT field. For example:<a href="#section-4-3" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-4-4">
 <pre>
 {
   "fbds": [
@@ -1335,7 +1336,7 @@ the EXTRA-TEXT field, for example:<a href="#section-4-2" class="pilcrow">¶</a><
     }
   ]
 }
-</pre><a href="#section-4-3" class="pilcrow">¶</a>
+</pre><a href="#section-4-4" class="pilcrow">¶</a>
 </div>
 </section>
 </div>
