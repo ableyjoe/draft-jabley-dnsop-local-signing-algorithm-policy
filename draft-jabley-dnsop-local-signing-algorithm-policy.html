@@ -8,18 +8,15 @@
 <meta content="Joe Abley" name="author">
 <meta content="
        Security-aware resolvers validate signatures, where available, in
-order to protect their clients from data that is known to be
-inauthentic. DNSSEC treats all algorithms as equal when it comes
-to validation, such that any single valid signature is sufficient
-proof of authenticity, and that data is only to be judged to be
-inauthentic if all available signatures are found to be invalid. 
-       However, a resolver might have a different local policy, e.g. to
-interpret a failure to validate a signature made with an algorithm
-that is considered to be post-quantum-safe as evidence of inauthentic
-data regardless of whether a valid signature by a weaker, non-PQ-safe
-algorithm also exists.  This document discusses such local policy
-and provides a means to indicate to a client that local policy has
-been applied to response validation. 
+order to protect their clients from inauthentic data.  DNSSEC treats
+all algorithms as equal when it comes to validation, such that a
+single valid signature is considered sufficient proof of authenticity,
+and that data is only to be judged to be inauthentic if all available
+signatures are found to be invalid. However, a resolver might have
+a different local policy, e.g. in its handling of quantum-safe
+signatures.  This document discusses such local policy and describes
+a means to indicate to a client that specific local policy has been
+applied to response validation. 
     " name="description">
 <meta content="xml2rfc 3.34.0" name="generator">
 <meta content="dnssec" name="keyword">
@@ -1092,18 +1089,15 @@ svg {
 <section id="section-abstract">
       <h2 id="abstract"><a href="#abstract" class="selfRef">Abstract</a></h2>
 <p id="section-abstract-1">Security-aware resolvers validate signatures, where available, in
-order to protect their clients from data that is known to be
-inauthentic. DNSSEC treats all algorithms as equal when it comes
-to validation, such that any single valid signature is sufficient
-proof of authenticity, and that data is only to be judged to be
-inauthentic if all available signatures are found to be invalid.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
-<p id="section-abstract-2">However, a resolver might have a different local policy, e.g. to
-interpret a failure to validate a signature made with an algorithm
-that is considered to be post-quantum-safe as evidence of inauthentic
-data regardless of whether a valid signature by a weaker, non-PQ-safe
-algorithm also exists.  This document discusses such local policy
-and provides a means to indicate to a client that local policy has
-been applied to response validation.<a href="#section-abstract-2" class="pilcrow">¶</a></p>
+order to protect their clients from inauthentic data.  DNSSEC treats
+all algorithms as equal when it comes to validation, such that a
+single valid signature is considered sufficient proof of authenticity,
+and that data is only to be judged to be inauthentic if all available
+signatures are found to be invalid. However, a resolver might have
+a different local policy, e.g. in its handling of quantum-safe
+signatures.  This document discusses such local policy and describes
+a means to indicate to a client that specific local policy has been
+applied to response validation.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
 </section>
 <section class="note rfcEditorRemove" id="section-note.1">
       <h2 id="name-about-this-document">
@@ -1214,8 +1208,8 @@ been applied to response validation.<a href="#section-abstract-2" class="pilcrow
 <a href="#section-1" class="section-number selfRef">1. </a><a href="#name-introduction" class="section-name selfRef">Introduction</a>
       </h2>
 <p id="section-1-1">DNS Security Extensions (DNSSEC) are specified in <span>[<a href="#RFC9364" class="cite xref">RFC9364</a>]</span>.<a href="#section-1-1" class="pilcrow">¶</a></p>
-<p id="section-1-2">DNSSEC provides a mechanism for a subject RRSet to have cryptographic
-signatures attached. Signatures are encoded in a DNS message alongside
+<p id="section-1-2">DNSSEC provides a mechanism to attach cryptographic signatures to
+a subject RRSet.  Signatures are encoded in a DNS message alongside
 the subject RRSet as an RRSIG RRSet with the same owner name, TTL
 and class. Different RRSIG RRs in such an RRSet might correspond
 to different signing keys and different signing algorithms.<a href="#section-1-2" class="pilcrow">¶</a></p>
@@ -1248,9 +1242,9 @@ follows:<a href="#section-1-5" class="pilcrow">¶</a></p>
 </li>
       </ul>
 <p id="section-1-7">This document describes one such "more restrictive policy" relating
-to the introduction of quantum-safe algorithms in DNSSEC, and defines
-a signal that can be used to inform a relying party that such a
-policy is in place.<a href="#section-1-7" class="pilcrow">¶</a></p>
+to the introduction of quantum-safe algorithms in DNSSEC, and
+describes a signal that can be used to inform a relying party that
+such a policy is in place.<a href="#section-1-7" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="conventions-and-definitions">
