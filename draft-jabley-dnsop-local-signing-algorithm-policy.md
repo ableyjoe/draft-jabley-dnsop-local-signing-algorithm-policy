@@ -79,7 +79,7 @@ follows:
 >    This document specifies that a resolver SHOULD accept any valid RRSIG
 >    as sufficient, and only determine that an RRset is Bogus if all
 >    RRSIGs fail validation.
-> 
+>
 >    If a resolver adopts a more restrictive policy, there's a danger that
 >    properly signed data might unnecessarily fail validation due to cache
 >    timing issues.  Furthermore, certain zone management techniques, like
