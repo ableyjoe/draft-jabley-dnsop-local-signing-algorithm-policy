@@ -160,21 +160,23 @@ The operator of a security-aware resolver that adopted this local
 policy would naturally pay close attention to the concerns expressed
 in {{Section 4.2.1.2 of !RFC6781}}.
 
-# Signals to Relying Parties {#filtered_ede}
+# Signals to Clients of Resolvers {#filtered_ede}
 
 The local policy described in {{local_policy}} would have the effect
-of suppressing DNS responses that might otherwise have been returned
-to a client in the specific case where validation of a quantum-unsafe
-signature succeded while validation of a quantum-safe signature over
-the same data did not.
+of suppressing some positive DNS responses that might otherwise
+have been returned to a client: in particular, when validation of
+a quantum-unsafe signature over some RRSet succeded while validation
+of a quantum-safe signature over the same RRSet did not.
 
-To the end-user, this is an example of DNS response filtering and
+To the end-user, this is indinguishable from DNS response filtering and
 existing mechanisms described in {{!I-D.ietf-dnsop-filtering-transparency}}
-can be used. For example, a negative DNS response that follows a
-failure to validate according to this local policy mnight include
-an Extended DNS Error Code 6 ("DNSSEC Bogus") {{!RFC8914}} and
-include indirect references to the specific policy in force encoded in
-the EXTRA-TEXT field, for example:
+can be used to provide supporting information.
+
+A negative DNS response that follows a failure to validate according
+to the local policy described in {{local_policy}} might include an
+Extended DNS Error Code 6 ("DNSSEC Bogus") {{!RFC8914}} and include
+indirect references to the specific policy in force encoded in the
+EXTRA-TEXT field. For example:
 
 ~~~
 {
