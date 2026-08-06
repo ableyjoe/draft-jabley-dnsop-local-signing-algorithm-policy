@@ -104,9 +104,16 @@ policy is in place.
 
 # Conventions and Definitions
 
-#{::boilerplate bcp14-tagged}
-
 This document uses DNS terminology as described in {{!RFC9499}}.
+
+This document applies the phrase "quantum-safe" to cryptographic
+algorithms and signatures made by those algorithms in the loose
+sense of offering acceptable protection against cryptanalyic attack
+by a quantum computer. This usage is consistent with general,
+contemporary discussion of so-called post-quantum cryptography.
+
+This document uses the phrase "quantum-unsafe" to mean something
+that is not quantum-safe.
 
 
 # Deployment of Quantum-Safe Algorithms in DNSSEC {#local_policy}
@@ -117,10 +124,10 @@ Examples of such algorithms used in DNSSEC are ECDSA Curve P-256
 with SHA-256 {{?RFC6605}} and RSA/SHA-256 {{?RFC5702}}. In this
 document we refer to such algorithms as quantum-unsafe.
 
-However, there exist other algorithms that have been classified as
-quantum-safe by some authorities, such as Module-Lattice-Based
-Digital Signature Standard {?FIPS204} whose use in DNSSEC as ML-DSA-44
-is described in {{?I-D.westerbaan-dnssec-mldsa}}.
+However, there exist other algorithms that are considered quantum-safe,
+such as Module-Lattice-Based Digital Signature Standard {?FIPS204}
+whose use in DNSSEC as ML-DSA-44 is described in
+{{?I-D.westerbaan-dnssec-mldsa}}.
 
 Quantum-safe algorithms are not widely-deployed in DNSSEC at the
 time of writing, and there is no known prediction of their rapid
