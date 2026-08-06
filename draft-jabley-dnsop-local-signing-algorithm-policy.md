@@ -1,6 +1,6 @@
 ---
-title: "Supporting Quantum-Safe Algorithms in DNSSEC with Local Validation Policy"
-abbrev: "Quantum-Safe Local Validation Policy for DNSSEC"
+title: "Supporting Quantum-Safe Algorithms in DNSSEC with Local Resolver Policy"
+abbrev: "Quantum-Safe Local Resolver Policy for DNSSEC"
 category: info
 
 docname: draft-jabley-dnsop-local-signing-algorithm-policy-latest
