@@ -8,8 +8,8 @@ Intended status: Informational                             6 August 2026
 Expires: 7 February 2027
 
 
-   Reflecting Local Policy on Signing Algorithms in DNSSEC Signature
-                               Validation
+   Supporting Quantum-Safe Algorithms in DNSSEC with Local Validation
+                                 Policy
         draft-jabley-dnsop-local-signing-algorithm-policy-latest
 
 Abstract
