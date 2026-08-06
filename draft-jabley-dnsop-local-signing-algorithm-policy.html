@@ -4,16 +4,29 @@
 <meta charset="utf-8">
 <meta content="Common,Latin" name="scripts">
 <meta content="initial-scale=1.0" name="viewport">
-<title>TODO - Your title</title>
-<meta content="Your Name Here" name="author">
+<title>Reflecting Local Policy on Signing Algorithms in DNSSEC Signature Validation</title>
+<meta content="Joe Abley" name="author">
 <meta content="
-       TODO Abstract 
+       Security-aware resolvers validate signatures, where available, in
+order to protect their clients from data that is known to be
+inauthentic. DNSSEC treats all algorithms as equal when it comes
+to validation, such that any single valid signature is sufficient
+proof of authenticity, and that data is only to be judged to be
+inauthentic if all available signatures are found to be invalid. 
+       However, a resolver might have a different local policy, e.g. to
+interpret a failure to validate a signature made with an algorithm
+that is considered to be post-quantum-safe as evidence of inauthentic
+data regardless of whether a valid signature by a weaker, non-PQ-safe
+algorithm also exists.  This document discusses such local policy
+and provides a means to indicate to a client that local policy has
+been applied to response validation. 
     " name="description">
 <meta content="xml2rfc 3.34.0" name="generator">
-<meta content="next generation" name="keyword">
-<meta content="unicorn" name="keyword">
-<meta content="AI-native" name="keyword">
-<meta content="draft-todo-yourname-protocol-latest" name="ietf.draft">
+<meta content="dnssec" name="keyword">
+<meta content="local policy" name="keyword">
+<meta content="algorithm" name="keyword">
+<meta content="PQC" name="keyword">
+<meta content="draft-jabley-dnsop-local-signing-algorithm-policy-latest" name="ietf.draft">
 <!-- Generator version information:
   xml2rfc 3.34.0
     Python 3.14.5
@@ -1046,7 +1059,7 @@ svg {
 <td class="right">August 2026</td>
 </tr></thead>
 <tfoot><tr>
-<td class="left">Here</td>
+<td class="left">Abley</td>
 <td class="center">Expires 7 February 2027</td>
 <td class="right">[Page]</td>
 </tr></tfoot>
@@ -1055,9 +1068,9 @@ svg {
 <div id="internal-metadata" class="document-information">
 <dl id="identifiers">
 <dt class="label-workgroup">Workgroup:</dt>
-<dd class="workgroup">WG Working Group</dd>
+<dd class="workgroup">Domain Name System Operations</dd>
 <dt class="label-internet-draft">Internet-Draft:</dt>
-<dd class="internet-draft">draft-todo-yourname-protocol-latest</dd>
+<dd class="internet-draft">draft-jabley-dnsop-local-signing-algorithm-policy-latest</dd>
 <dt class="label-published">Published:</dt>
 <dd class="published">
 <time datetime="2026-08-06" class="published">6 August 2026</time>
@@ -1069,16 +1082,28 @@ svg {
 <dt class="label-authors">Author:</dt>
 <dd class="authors">
 <div class="author">
-      <div class="author-name">Y. N. Here</div>
-<div class="org">Your Organization Here</div>
+      <div class="author-name">J. Abley</div>
+<div class="org">Cloudflare</div>
 </div>
 </dd>
 </dl>
 </div>
-<h1 id="title">TODO - Your title</h1>
+<h1 id="title">Reflecting Local Policy on Signing Algorithms in DNSSEC Signature Validation</h1>
 <section id="section-abstract">
       <h2 id="abstract"><a href="#abstract" class="selfRef">Abstract</a></h2>
-<p id="section-abstract-1">TODO Abstract<a href="#section-abstract-1" class="pilcrow">¶</a></p>
+<p id="section-abstract-1">Security-aware resolvers validate signatures, where available, in
+order to protect their clients from data that is known to be
+inauthentic. DNSSEC treats all algorithms as equal when it comes
+to validation, such that any single valid signature is sufficient
+proof of authenticity, and that data is only to be judged to be
+inauthentic if all available signatures are found to be invalid.<a href="#section-abstract-1" class="pilcrow">¶</a></p>
+<p id="section-abstract-2">However, a resolver might have a different local policy, e.g. to
+interpret a failure to validate a signature made with an algorithm
+that is considered to be post-quantum-safe as evidence of inauthentic
+data regardless of whether a valid signature by a weaker, non-PQ-safe
+algorithm also exists.  This document discusses such local policy
+and provides a means to indicate to a client that local policy has
+been applied to response validation.<a href="#section-abstract-2" class="pilcrow">¶</a></p>
 </section>
 <section class="note rfcEditorRemove" id="section-note.1">
       <h2 id="name-about-this-document">
@@ -1086,14 +1111,15 @@ svg {
       </h2>
 <p id="section-note.1-1">This note is to be removed before publishing as an RFC.<a href="#section-note.1-1" class="pilcrow">¶</a></p>
 <p id="section-note.1-2">
-        The latest revision of this draft can be found at <span><a href="https://example.com/LATEST">https://example.com/LATEST</a></span>.
-        Status information for this document may be found at <span><a href="https://datatracker.ietf.org/doc/draft-todo-yourname-protocol/">https://datatracker.ietf.org/doc/draft-todo-yourname-protocol/</a></span>.<a href="#section-note.1-2" class="pilcrow">¶</a></p>
+        The latest revision of this draft can be found at <span><a href="https://ableyjoe.github.io/draft-jabley-dnsop-local-signing-algorithm-policy/draft-jabley-dnsop-local-signing-algorithm-policy.html">https://ableyjoe.github.io/draft-jabley-dnsop-local-signing-algorithm-policy/draft-jabley-dnsop-local-signing-algorithm-policy.html</a></span>.
+        Status information for this document may be found at <span><a href="https://datatracker.ietf.org/doc/draft-jabley-dnsop-local-signing-algorithm-policy/">https://datatracker.ietf.org/doc/draft-jabley-dnsop-local-signing-algorithm-policy/</a></span>.<a href="#section-note.1-2" class="pilcrow">¶</a></p>
 <p id="section-note.1-3">
         Discussion of this document takes place on the
-        WG Working Group mailing list (<span><a href="mailto:WG@example.com">mailto:WG@example.com</a></span>),
-        which is archived at <span><a href="https://example.com/WG">https://example.com/WG</a></span>.<a href="#section-note.1-3" class="pilcrow">¶</a></p>
+        Domain Name System Operations Working Group mailing list (<span><a href="mailto:dnsop@ietf.org">mailto:dnsop@ietf.org</a></span>),
+        which is archived at <span><a href="https://mailarchive.ietf.org/arch/browse/dnsop/">https://mailarchive.ietf.org/arch/browse/dnsop/</a></span>.
+        Subscribe at <span><a href="https://www.ietf.org/mailman/listinfo/dnsop/">https://www.ietf.org/mailman/listinfo/dnsop/</a></span>.<a href="#section-note.1-3" class="pilcrow">¶</a></p>
 <p id="section-note.1-4">Source for this draft and an issue tracker can be found at
-        <span><a href="https://github.com/USER/REPO">https://github.com/USER/REPO</a></span>.<a href="#section-note.1-4" class="pilcrow">¶</a></p>
+        <span><a href="https://github.com/ableyjoe/draft-jabley-dnsop-local-signing-algorithm-policy">https://github.com/ableyjoe/draft-jabley-dnsop-local-signing-algorithm-policy</a></span>.<a href="#section-note.1-4" class="pilcrow">¶</a></p>
 </section>
 <div id="status-of-memo">
 <section id="section-boilerplate.1">
@@ -1150,74 +1176,275 @@ svg {
             <p id="section-toc.1-1.2.1" class="keepWithNext"><a href="#section-2" class="auto internal xref">2</a>.  <a href="#name-conventions-and-definitions" class="internal xref">Conventions and Definitions</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.3">
-            <p id="section-toc.1-1.3.1" class="keepWithNext"><a href="#section-3" class="auto internal xref">3</a>.  <a href="#name-security-considerations" class="internal xref">Security Considerations</a></p>
+            <p id="section-toc.1-1.3.1" class="keepWithNext"><a href="#section-3" class="auto internal xref">3</a>.  <a href="#name-boilerplate-bcp14-tagged" class="internal xref">{::boilerplate bcp14-tagged}</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.4">
-            <p id="section-toc.1-1.4.1"><a href="#section-4" class="auto internal xref">4</a>.  <a href="#name-iana-considerations" class="internal xref">IANA Considerations</a></p>
+            <p id="section-toc.1-1.4.1"><a href="#section-4" class="auto internal xref">4</a>.  <a href="#name-deployment-of-quantum-safe-" class="internal xref">Deployment of Quantum-Safe Algorithms in DNSSEC</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.5">
-            <p id="section-toc.1-1.5.1"><a href="#section-5" class="auto internal xref">5</a>.  <a href="#name-normative-references" class="internal xref">Normative References</a></p>
+            <p id="section-toc.1-1.5.1"><a href="#section-5" class="auto internal xref">5</a>.  <a href="#name-signals-to-relying-parties" class="internal xref">Signals to Relying Parties</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.6">
-            <p id="section-toc.1-1.6.1"><a href="#appendix-A" class="auto internal xref"></a><a href="#name-acknowledgments" class="internal xref">Acknowledgments</a></p>
+            <p id="section-toc.1-1.6.1"><a href="#section-6" class="auto internal xref">6</a>.  <a href="#name-security-considerations" class="internal xref">Security Considerations</a></p>
 </li>
           <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.7">
-            <p id="section-toc.1-1.7.1"><a href="#appendix-B" class="auto internal xref"></a><a href="#name-authors-address" class="internal xref">Author's Address</a></p>
+            <p id="section-toc.1-1.7.1"><a href="#section-7" class="auto internal xref">7</a>.  <a href="#name-iana-considerations" class="internal xref">IANA Considerations</a></p>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8">
+            <p id="section-toc.1-1.8.1"><a href="#section-8" class="auto internal xref">8</a>.  <a href="#name-references" class="internal xref">References</a></p>
+<ul class="compact toc ulBare ulEmpty">
+<li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8.2.1">
+                <p id="section-toc.1-1.8.2.1.1"><a href="#section-8.1" class="auto internal xref">8.1</a>.  <a href="#name-normative-references" class="internal xref">Normative References</a></p>
+</li>
+              <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.8.2.2">
+                <p id="section-toc.1-1.8.2.2.1"><a href="#section-8.2" class="auto internal xref">8.2</a>.  <a href="#name-informative-references" class="internal xref">Informative References</a></p>
+</li>
+            </ul>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.9">
+            <p id="section-toc.1-1.9.1"><a href="#appendix-A" class="auto internal xref"></a><a href="#name-acknowledgments" class="internal xref">Acknowledgments</a></p>
+</li>
+          <li class="compact toc ulBare ulEmpty" id="section-toc.1-1.10">
+            <p id="section-toc.1-1.10.1"><a href="#appendix-B" class="auto internal xref"></a><a href="#name-authors-address" class="internal xref">Author's Address</a></p>
 </li>
         </ul>
 </nav>
 </section>
 </div>
-<div id="introduction">
+<div id="intro">
 <section id="section-1">
       <h2 id="name-introduction">
 <a href="#section-1" class="section-number selfRef">1. </a><a href="#name-introduction" class="section-name selfRef">Introduction</a>
       </h2>
-<p id="section-1-1">TODO Introduction<a href="#section-1-1" class="pilcrow">¶</a></p>
+<p id="section-1-1">DNS Security Extensions (DNSSEC) are specified in <span>[<a href="#RFC9364" class="cite xref">RFC9364</a>]</span>.<a href="#section-1-1" class="pilcrow">¶</a></p>
+<p id="section-1-2">DNSSEC provides a mechanism for a subject RRSet to have cryptographic
+signatures attached. Signatures are encoded in a DNS message alongside
+the subject RRSet as an RRSIG RRSet with the same owner name, TTL
+and class. Different RRSIG RRs in such an RRSet might correspond
+to different signing keys and different signing algorithms.<a href="#section-1-2" class="pilcrow">¶</a></p>
+<p id="section-1-3">In <span><a href="https://rfc-editor.org/rfc/rfc4035#section-5.3.3" class="relref">Section 5.3.3</a> of [<a href="#RFC4035" class="cite xref">RFC4035</a>]</span> the process for determining the
+authenticity of an RRSet with more than one associated signature (RRSIG)
+is considered. The specification <span>[<a href="#RFC4035" class="cite xref">RFC4035</a>]</span> defers the matter of
+whether every RRSIG needs to be checked individually to local policy:<a href="#section-1-3" class="pilcrow">¶</a></p>
+<ul class="normal ulEmpty">
+<li class="normal ulEmpty" id="section-1-4.1">
+          <p id="section-1-4.1.1">If other RRSIG RRs also cover this RRset, the local resolver security
+  policy determines whether the resolver also has to test these RRSIG
+  RRs and how to resolve conflicts if these RRSIG RRs lead to differing
+  results.<a href="#section-1-4.1.1" class="pilcrow">¶</a></p>
+</li>
+      </ul>
+<p id="section-1-5">This guidance is further clarified in <span><a href="https://rfc-editor.org/rfc/rfc6840#section-5.4" class="relref">Section 5.4</a> of [<a href="#RFC6840" class="cite xref">RFC6840</a>]</span> as
+follows:<a href="#section-1-5" class="pilcrow">¶</a></p>
+<ul class="normal ulEmpty">
+<li class="normal ulEmpty" id="section-1-6.1">
+          <p id="section-1-6.1.1">This document specifies that a resolver SHOULD accept any valid RRSIG
+   as sufficient, and only determine that an RRset is Bogus if all
+   RRSIGs fail validation.<a href="#section-1-6.1.1" class="pilcrow">¶</a></p>
+<p id="section-1-6.1.2">If a resolver adopts a more restrictive policy, there's a danger that
+   properly signed data might unnecessarily fail validation due to cache
+   timing issues.  Furthermore, certain zone management techniques, like
+   the Double Signature Zone Signing Key Rollover method described in
+   <span><a href="https://rfc-editor.org/rfc/rfc6781#section-4.2.1.2" class="relref">Section 4.2.1.2</a> of [<a href="#RFC6781" class="cite xref">RFC6781</a>]</span>, will not work reliably.  Such a
+   resolver is also vulnerable to malicious insertion of gibberish
+   signatures.<a href="#section-1-6.1.2" class="pilcrow">¶</a></p>
+</li>
+      </ul>
+<p id="section-1-7">This document describes one such "more restrictive policy" relating
+to the introduction of quantum-safe algorithms in DNSSEC, and defines
+a signal that can be used to inform a relying party that such a
+policy is in place.<a href="#section-1-7" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="conventions-and-definitions">
 <section id="section-2">
       <h2 id="name-conventions-and-definitions">
 <a href="#section-2" class="section-number selfRef">2. </a><a href="#name-conventions-and-definitions" class="section-name selfRef">Conventions and Definitions</a>
+    </h2>
+</section>
+</div>
+<div id="boilerplate-bcp14-tagged">
+<section id="section-3">
+      <h2 id="name-boilerplate-bcp14-tagged">
+<a href="#section-3" class="section-number selfRef">3. </a><a href="#name-boilerplate-bcp14-tagged" class="section-name selfRef">{::boilerplate bcp14-tagged}</a>
       </h2>
-<p id="section-2-1">The key words "<span class="bcp14">MUST</span>", "<span class="bcp14">MUST NOT</span>", "<span class="bcp14">REQUIRED</span>", "<span class="bcp14">SHALL</span>", "<span class="bcp14">SHALL NOT</span>", "<span class="bcp14">SHOULD</span>", "<span class="bcp14">SHOULD NOT</span>", "<span class="bcp14">RECOMMENDED</span>", "<span class="bcp14">NOT RECOMMENDED</span>",
-"<span class="bcp14">MAY</span>", and "<span class="bcp14">OPTIONAL</span>" in this document are to be interpreted as
-described in BCP 14 <span>[<a href="#RFC2119" class="cite xref">RFC2119</a>]</span> <span>[<a href="#RFC8174" class="cite xref">RFC8174</a>]</span> when, and only when, they
-appear in all capitals, as shown here.<a href="#section-2-1" class="pilcrow">¶</a></p>
+<p id="section-3-1">This document uses DNS terminology as described in <span>[<a href="#RFC9499" class="cite xref">RFC9499</a>]</span>.<a href="#section-3-1" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="local_policy">
+<section id="section-4">
+      <h2 id="name-deployment-of-quantum-safe-">
+<a href="#section-4" class="section-number selfRef">4. </a><a href="#name-deployment-of-quantum-safe-" class="section-name selfRef">Deployment of Quantum-Safe Algorithms in DNSSEC</a>
+      </h2>
+<p id="section-4-1">Certain cryptographic algorithms have been identified as being to
+weak to withstand cryptanalytic attack by a quantum computer.
+Examples of such algorithms used in DNSSEC are ECDSA Curve P-256
+with SHA-256 <span>[<a href="#RFC6605" class="cite xref">RFC6605</a>]</span> and RSA/SHA-256 <span>[<a href="#RFC5702" class="cite xref">RFC5702</a>]</span>. In this
+document we refer to such algorithms as quantum-unsafe.<a href="#section-4-1" class="pilcrow">¶</a></p>
+<p id="section-4-2">However, there exist other algorithms that have been classified as
+quantum-safe by some authorities, such as Module-Lattice-Based
+Digital Signature Standard {?FIPS204} whose use in DNSSEC as ML-DSA-44
+is described in <span>[<a href="#I-D.westerbaan-dnssec-mldsa" class="cite xref">I-D.westerbaan-dnssec-mldsa</a>]</span>.<a href="#section-4-2" class="pilcrow">¶</a></p>
+<p id="section-4-3">Quantum-safe algorithms are not widely-deployed in DNSSEC at the
+time of writing, and there is no known prediction of their rapid
+deployment. DNSSEC validators are required to ignore signatures
+made using algorithms that they do not support.<a href="#section-4-3" class="pilcrow">¶</a></p>
+<p id="section-4-4">To publish data in the DNS with broad integrity protection for
+relying parties that includes the use of quantum-safe algorithms,
+it is therefore necessary to include multiple signatures over the
+subject data: signatures with widely-deployed, quantum-unsafe
+algorithms for the legacy population of validators and also signatures
+with poorly-deployed, quantum-safe algorithms intended for validators
+that support them.  Signing with quantum-safe algorithms alone would
+afford no integrity protection at all to the legacy validator
+population.<a href="#section-4-4" class="pilcrow">¶</a></p>
+<p id="section-4-5">The classsification of algorithms as quantum-safe or quantum-unsafe
+imagines a future in which the ability to validate a signature made
+by a quantum-unsafe algorithm no longer provides sufficient confidence
+that the signed data is authentic. However, a signature over the same
+data by a quantum-safe algorithm would provide that confidence, to
+a validator that is equipped to use it.<a href="#section-4-5" class="pilcrow">¶</a></p>
+<p id="section-4-6">Such a validator might therefore implement a local policy to ignore
+signatures made using quantum-unsafe algorithms when signatures
+made by quantum-safe algorithms are also available for the same
+subject data. Such a policy would treat data with a valid quantum-safe
+signature as authentic regardless of the validity of any other
+signature, and treat data with an invalid quantum-safe signature
+as inauthentic even if valid signatures made by quantum-unsafe
+algorithms are available.<a href="#section-4-6" class="pilcrow">¶</a></p>
+<p id="section-4-7">The operator of a security-aware resolver that adopted this local
+policy would naturally pay close attention to the concerns expressed
+in <span><a href="https://rfc-editor.org/rfc/rfc6781#section-4.2.1.2" class="relref">Section 4.2.1.2</a> of [<a href="#RFC6781" class="cite xref">RFC6781</a>]</span>.<a href="#section-4-7" class="pilcrow">¶</a></p>
+</section>
+</div>
+<div id="filtered_ede">
+<section id="section-5">
+      <h2 id="name-signals-to-relying-parties">
+<a href="#section-5" class="section-number selfRef">5. </a><a href="#name-signals-to-relying-parties" class="section-name selfRef">Signals to Relying Parties</a>
+      </h2>
+<p id="section-5-1">The local policy described in <a href="#local_policy" class="auto internal xref">Section 4</a> would have the effect
+of suppressing DNS responses that might otherwise have been returned
+to a client in the specific case where validation of a quantum-unsafe
+signature succeded while validation of a quantum-safe signature over
+the same data did not.<a href="#section-5-1" class="pilcrow">¶</a></p>
+<p id="section-5-2">To the end-user, this is an example of DNS response filtering and
+existing mechanisms described in <span>[<a href="#I-D.ietf-dnsop-filtering-transparency" class="cite xref">I-D.ietf-dnsop-filtering-transparency</a>]</span>
+can be used. For example, a negative DNS response that follows a
+failure to validate according to this local policy mnight include
+an Extended DNS Error Code 6 ("DNSSEC Bogus") <span>[<a href="#RFC8914" class="cite xref">RFC8914</a>]</span> and
+an EXTRA-TEXT Field "fbds" which is an array of appropriate
+references that describe the local policy:<a href="#section-5-2" class="pilcrow">¶</a></p>
+<div class="alignLeft art-text artwork" id="section-5-3">
+<pre>
+{
+  "fbds": [
+    {
+      "db": "resolver-operator-reference",
+      "id": "quantum-safe-validation-policy"
+    }
+  ]
+}
+</pre><a href="#section-5-3" class="pilcrow">¶</a>
+</div>
 </section>
 </div>
 <div id="security-considerations">
-<section id="section-3">
+<section id="section-6">
       <h2 id="name-security-considerations">
-<a href="#section-3" class="section-number selfRef">3. </a><a href="#name-security-considerations" class="section-name selfRef">Security Considerations</a>
+<a href="#section-6" class="section-number selfRef">6. </a><a href="#name-security-considerations" class="section-name selfRef">Security Considerations</a>
       </h2>
-<p id="section-3-1">TODO Security<a href="#section-3-1" class="pilcrow">¶</a></p>
+<p id="section-6-1">This document provides an example of local policy relating to DNSSEC
+validation that could be employed by the operator of a security-aware
+resolver to address weaknesses in quantum-unsafe signing algorithms.<a href="#section-6-1" class="pilcrow">¶</a></p>
+<p id="section-6-2">Local policy is often no friend of interoperability. In this case
+the parties affected by local policy decisions might well have made
+an informed decision to use a resolver with known local policy, in
+which case resulting differences in validation behaviour will
+presumably be well-aligned with the relying parties. However,
+particular resolvers are also commonly assigned to devices without
+an informed decision-making process with an end user, in which case
+differences in behaviour might be surprising.<a href="#section-6-2" class="pilcrow">¶</a></p>
+<p id="section-6-3">The Extended DNS Error described in <a href="#filtered_ede" class="auto internal xref">Section 5</a>} provides a
+mechanism for a resolver operator to communicate the existence of
+local policy to a client such that the reason for the different
+behaviour can be better understood.<a href="#section-6-3" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="iana-considerations">
-<section id="section-4">
+<section id="section-7">
       <h2 id="name-iana-considerations">
-<a href="#section-4" class="section-number selfRef">4. </a><a href="#name-iana-considerations" class="section-name selfRef">IANA Considerations</a>
+<a href="#section-7" class="section-number selfRef">7. </a><a href="#name-iana-considerations" class="section-name selfRef">IANA Considerations</a>
       </h2>
-<p id="section-4-1">This document has no IANA actions.<a href="#section-4-1" class="pilcrow">¶</a></p>
+<p id="section-7-1">This document has no IANA actions.<a href="#section-7-1" class="pilcrow">¶</a></p>
 </section>
 </div>
-<div id="sec-normative-references">
-<section id="section-5">
-      <h2 id="name-normative-references">
-<a href="#section-5" class="section-number selfRef">5. </a><a href="#name-normative-references" class="section-name selfRef">Normative References</a>
+<div id="sec-combined-references">
+<section id="section-8">
+      <h2 id="name-references">
+<a href="#section-8" class="section-number selfRef">8. </a><a href="#name-references" class="section-name selfRef">References</a>
       </h2>
+<div id="sec-normative-references">
+<section id="section-8.1">
+        <h3 id="name-normative-references">
+<a href="#section-8.1" class="section-number selfRef">8.1. </a><a href="#name-normative-references" class="section-name selfRef">Normative References</a>
+        </h3>
 <dl class="references">
-<dt id="RFC2119">[RFC2119]</dt>
-      <dd>
-<span class="refAuthor">Bradner, S.</span>, <span class="refTitle">"Key words for use in RFCs to Indicate Requirement Levels"</span>, <span class="seriesInfo">BCP 14</span>, <span class="seriesInfo">RFC 2119</span>, <span class="seriesInfo">DOI 10.17487/RFC2119</span>, <time datetime="1997-03" class="refDate">March 1997</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc2119">https://www.rfc-editor.org/rfc/rfc2119</a>&gt;</span>. </dd>
+<dt id="I-D.ietf-dnsop-filtering-transparency">[I-D.ietf-dnsop-filtering-transparency]</dt>
+        <dd>
+<span class="refAuthor">Nottingham, M.</span> and <span class="refAuthor">D. Adrian</span>, <span class="refTitle">"DNS Filtering Transparency"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-ietf-dnsop-filtering-transparency-00</span>, <time datetime="2026-08-01" class="refDate">1 August 2026</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-ietf-dnsop-filtering-transparency-00">https://datatracker.ietf.org/doc/html/draft-ietf-dnsop-filtering-transparency-00</a>&gt;</span>. </dd>
 <dd class="break"></dd>
-<dt id="RFC8174">[RFC8174]</dt>
-    <dd>
-<span class="refAuthor">Leiba, B.</span>, <span class="refTitle">"Ambiguity of Uppercase vs Lowercase in RFC 2119 Key Words"</span>, <span class="seriesInfo">BCP 14</span>, <span class="seriesInfo">RFC 8174</span>, <span class="seriesInfo">DOI 10.17487/RFC8174</span>, <time datetime="2017-05" class="refDate">May 2017</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc8174">https://www.rfc-editor.org/rfc/rfc8174</a>&gt;</span>. </dd>
+<dt id="RFC4035">[RFC4035]</dt>
+        <dd>
+<span class="refAuthor">Arends, R.</span>, <span class="refAuthor">Austein, R.</span>, <span class="refAuthor">Larson, M.</span>, <span class="refAuthor">Massey, D.</span>, and <span class="refAuthor">S. Rose</span>, <span class="refTitle">"Protocol Modifications for the DNS Security Extensions"</span>, <span class="seriesInfo">RFC 4035</span>, <span class="seriesInfo">DOI 10.17487/RFC4035</span>, <time datetime="2005-03" class="refDate">March 2005</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc4035">https://www.rfc-editor.org/rfc/rfc4035</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC6781">[RFC6781]</dt>
+        <dd>
+<span class="refAuthor">Kolkman, O.</span>, <span class="refAuthor">Mekking, W.</span>, and <span class="refAuthor">R. Gieben</span>, <span class="refTitle">"DNSSEC Operational Practices, Version 2"</span>, <span class="seriesInfo">RFC 6781</span>, <span class="seriesInfo">DOI 10.17487/RFC6781</span>, <time datetime="2012-12" class="refDate">December 2012</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc6781">https://www.rfc-editor.org/rfc/rfc6781</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC6840">[RFC6840]</dt>
+        <dd>
+<span class="refAuthor">Weiler, S., Ed.</span> and <span class="refAuthor">D. Blacka, Ed.</span>, <span class="refTitle">"Clarifications and Implementation Notes for DNS Security (DNSSEC)"</span>, <span class="seriesInfo">RFC 6840</span>, <span class="seriesInfo">DOI 10.17487/RFC6840</span>, <time datetime="2013-02" class="refDate">February 2013</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc6840">https://www.rfc-editor.org/rfc/rfc6840</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC8914">[RFC8914]</dt>
+        <dd>
+<span class="refAuthor">Kumari, W.</span>, <span class="refAuthor">Hunt, E.</span>, <span class="refAuthor">Arends, R.</span>, <span class="refAuthor">Hardaker, W.</span>, and <span class="refAuthor">D. Lawrence</span>, <span class="refTitle">"Extended DNS Errors"</span>, <span class="seriesInfo">RFC 8914</span>, <span class="seriesInfo">DOI 10.17487/RFC8914</span>, <time datetime="2020-10" class="refDate">October 2020</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc8914">https://www.rfc-editor.org/rfc/rfc8914</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC9364">[RFC9364]</dt>
+        <dd>
+<span class="refAuthor">Hoffman, P.</span>, <span class="refTitle">"DNS Security Extensions (DNSSEC)"</span>, <span class="seriesInfo">BCP 237</span>, <span class="seriesInfo">RFC 9364</span>, <span class="seriesInfo">DOI 10.17487/RFC9364</span>, <time datetime="2023-02" class="refDate">February 2023</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc9364">https://www.rfc-editor.org/rfc/rfc9364</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC9499">[RFC9499]</dt>
+      <dd>
+<span class="refAuthor">Hoffman, P.</span> and <span class="refAuthor">K. Fujiwara</span>, <span class="refTitle">"DNS Terminology"</span>, <span class="seriesInfo">BCP 219</span>, <span class="seriesInfo">RFC 9499</span>, <span class="seriesInfo">DOI 10.17487/RFC9499</span>, <time datetime="2024-03" class="refDate">March 2024</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc9499">https://www.rfc-editor.org/rfc/rfc9499</a>&gt;</span>. </dd>
 <dd class="break"></dd>
 </dl>
+</section>
+</div>
+<div id="sec-informative-references">
+<section id="section-8.2">
+        <h3 id="name-informative-references">
+<a href="#section-8.2" class="section-number selfRef">8.2. </a><a href="#name-informative-references" class="section-name selfRef">Informative References</a>
+        </h3>
+<dl class="references">
+<dt id="FIPS204">[FIPS204]</dt>
+        <dd>
+<span class="refAuthor">National Institute of Standards and Technology (NIST)</span>, <span class="refTitle">"Module-Lattice-Based Digital Signature Standard"</span>, <span class="seriesInfo">FIPS PUB 204</span>, <time datetime="2024-08" class="refDate">August 2024</time>, <span>&lt;<a href="https://doi.org/10.6028/NIST.FIPS.204">https://doi.org/10.6028/NIST.FIPS.204</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="I-D.westerbaan-dnssec-mldsa">[I-D.westerbaan-dnssec-mldsa]</dt>
+        <dd>
+<span class="refAuthor">Westerbaan, B.</span> and <span class="refAuthor">S. Schmieg</span>, <span class="refTitle">"Module-Lattice Digital Signature Algorithm for DNSSEC"</span>, <span class="refContent">Work in Progress</span>, <span class="seriesInfo">Internet-Draft, draft-westerbaan-dnssec-mldsa-03</span>, <time datetime="2026-08-04" class="refDate">4 August 2026</time>, <span>&lt;<a href="https://datatracker.ietf.org/doc/html/draft-westerbaan-dnssec-mldsa-03">https://datatracker.ietf.org/doc/html/draft-westerbaan-dnssec-mldsa-03</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC5702">[RFC5702]</dt>
+        <dd>
+<span class="refAuthor">Jansen, J.</span>, <span class="refTitle">"Use of SHA-2 Algorithms with RSA in DNSKEY and RRSIG Resource Records for DNSSEC"</span>, <span class="seriesInfo">RFC 5702</span>, <span class="seriesInfo">DOI 10.17487/RFC5702</span>, <time datetime="2009-10" class="refDate">October 2009</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc5702">https://www.rfc-editor.org/rfc/rfc5702</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+<dt id="RFC6605">[RFC6605]</dt>
+      <dd>
+<span class="refAuthor">Hoffman, P.</span> and <span class="refAuthor">W.C.A. Wijngaards</span>, <span class="refTitle">"Elliptic Curve Digital Signature Algorithm (DSA) for DNSSEC"</span>, <span class="seriesInfo">RFC 6605</span>, <span class="seriesInfo">DOI 10.17487/RFC6605</span>, <time datetime="2012-04" class="refDate">April 2012</time>, <span>&lt;<a href="https://www.rfc-editor.org/rfc/rfc6605">https://www.rfc-editor.org/rfc/rfc6605</a>&gt;</span>. </dd>
+<dd class="break"></dd>
+</dl>
+</section>
+</div>
 </section>
 </div>
 <div id="acknowledgments">
@@ -1225,7 +1452,7 @@ appear in all capitals, as shown here.<a href="#section-2-1" class="pilcrow">¶<
       <h2 id="name-acknowledgments">
 <a href="#name-acknowledgments" class="section-name selfRef">Acknowledgments</a>
       </h2>
-<p id="appendix-A-1">TODO acknowledge.<a href="#appendix-A-1" class="pilcrow">¶</a></p>
+<p id="appendix-A-1">Your name here, etc.<a href="#appendix-A-1" class="pilcrow">¶</a></p>
 </section>
 </div>
 <div id="authors-addresses">
@@ -1234,11 +1461,11 @@ appear in all capitals, as shown here.<a href="#section-2-1" class="pilcrow">¶<
 <a href="#name-authors-address" class="section-name selfRef">Author's Address</a>
       </h2>
 <address class="vcard">
-        <div dir="auto" class="left"><span class="fn nameRole">Your Name Here</span></div>
-<div dir="auto" class="left"><span class="org">Your Organization Here</span></div>
+        <div dir="auto" class="left"><span class="fn nameRole">Joe Abley</span></div>
+<div dir="auto" class="left"><span class="org">Cloudflare</span></div>
 <div class="email">
 <span>Email:</span>
-<a href="mailto:your.email@example.com" class="email">your.email@example.com</a>
+<a href="mailto:jabley@cloudflare.com" class="email">jabley@cloudflare.com</a>
 </div>
 </address>
 </section>

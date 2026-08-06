@@ -2,34 +2,52 @@
 
 
 
-WG Working Group                                              Y. N. Here
-Internet-Draft                                    Your Organization Here
+Domain Name System Operations                                   J. Abley
+Internet-Draft                                                Cloudflare
 Intended status: Informational                             6 August 2026
 Expires: 7 February 2027
 
 
-                           TODO - Your title
-                  draft-todo-yourname-protocol-latest
+   Reflecting Local Policy on Signing Algorithms in DNSSEC Signature
+                               Validation
+        draft-jabley-dnsop-local-signing-algorithm-policy-latest
 
 Abstract
 
-   TODO Abstract
+   Security-aware resolvers validate signatures, where available, in
+   order to protect their clients from data that is known to be
+   inauthentic.  DNSSEC treats all algorithms as equal when it comes to
+   validation, such that any single valid signature is sufficient proof
+   of authenticity, and that data is only to be judged to be inauthentic
+   if all available signatures are found to be invalid.
+
+   However, a resolver might have a different local policy, e.g. to
+   interpret a failure to validate a signature made with an algorithm
+   that is considered to be post-quantum-safe as evidence of inauthentic
+   data regardless of whether a valid signature by a weaker, non-PQ-safe
+   algorithm also exists.  This document discusses such local policy and
+   provides a means to indicate to a client that local policy has been
+   applied to response validation.
 
 About This Document
 
    This note is to be removed before publishing as an RFC.
 
    The latest revision of this draft can be found at
-   https://example.com/LATEST.  Status information for this document may
-   be found at https://datatracker.ietf.org/doc/draft-todo-yourname-
-   protocol/.
+   https://ableyjoe.github.io/draft-jabley-dnsop-local-signing-
+   algorithm-policy/draft-jabley-dnsop-local-signing-algorithm-
+   policy.html.  Status information for this document may be found at
+   https://datatracker.ietf.org/doc/draft-jabley-dnsop-local-signing-
+   algorithm-policy/.
 
-   Discussion of this document takes place on the WG Working Group
-   mailing list (mailto:WG@example.com), which is archived at
-   https://example.com/WG.
+   Discussion of this document takes place on the Domain Name System
+   Operations Working Group mailing list (mailto:dnsop@ietf.org), which
+   is archived at https://mailarchive.ietf.org/arch/browse/dnsop/.
+   Subscribe at https://www.ietf.org/mailman/listinfo/dnsop/.
 
    Source for this draft and an issue tracker can be found at
-   https://github.com/USER/REPO.
+   https://github.com/ableyjoe/draft-jabley-dnsop-local-signing-
+   algorithm-policy.
 
 Status of This Memo
 
@@ -66,49 +84,231 @@ Table of Contents
 
    1.  Introduction
    2.  Conventions and Definitions
-   3.  Security Considerations
-   4.  IANA Considerations
-   5.  Normative References
+   3.  {::boilerplate bcp14-tagged}
+   4.  Deployment of Quantum-Safe Algorithms in DNSSEC
+   5.  Signals to Relying Parties
+   6.  Security Considerations
+   7.  IANA Considerations
+   8.  References
+     8.1.  Normative References
+     8.2.  Informative References
    Acknowledgments
    Author's Address
 
 1.  Introduction
 
-   TODO Introduction
+   DNS Security Extensions (DNSSEC) are specified in [RFC9364].
+
+   DNSSEC provides a mechanism for a subject RRSet to have cryptographic
+   signatures attached.  Signatures are encoded in a DNS message
+   alongside the subject RRSet as an RRSIG RRSet with the same owner
+   name, TTL and class.  Different RRSIG RRs in such an RRSet might
+   correspond to different signing keys and different signing
+   algorithms.
+
+   In Section 5.3.3 of [RFC4035] the process for determining the
+   authenticity of an RRSet with more than one associated signature
+   (RRSIG) is considered.  The specification [RFC4035] defers the matter
+   of whether every RRSIG needs to be checked individually to local
+   policy:
+
+      If other RRSIG RRs also cover this RRset, the local resolver
+      security policy determines whether the resolver also has to test
+      these RRSIG RRs and how to resolve conflicts if these RRSIG RRs
+      lead to differing results.
+
+   This guidance is further clarified in Section 5.4 of [RFC6840] as
+   follows:
+
+      This document specifies that a resolver SHOULD accept any valid
+      RRSIG as sufficient, and only determine that an RRset is Bogus if
+      all RRSIGs fail validation.
+
+      If a resolver adopts a more restrictive policy, there's a danger
+      that properly signed data might unnecessarily fail validation due
+      to cache timing issues.  Furthermore, certain zone management
+      techniques, like the Double Signature Zone Signing Key Rollover
+      method described in Section 4.2.1.2 of [RFC6781], will not work
+      reliably.  Such a resolver is also vulnerable to malicious
+      insertion of gibberish signatures.
+
+   This document describes one such "more restrictive policy" relating
+   to the introduction of quantum-safe algorithms in DNSSEC, and defines
+   a signal that can be used to inform a relying party that such a
+   policy is in place.
 
 2.  Conventions and Definitions
 
-   The key words "MUST", "MUST NOT", "REQUIRED", "SHALL", "SHALL NOT",
-   "SHOULD", "SHOULD NOT", "RECOMMENDED", "NOT RECOMMENDED", "MAY", and
-   "OPTIONAL" in this document are to be interpreted as described in
-   BCP 14 [RFC2119] [RFC8174] when, and only when, they appear in all
-   capitals, as shown here.
+3.  {::boilerplate bcp14-tagged}
 
-3.  Security Considerations
+   This document uses DNS terminology as described in [RFC9499].
 
-   TODO Security
+4.  Deployment of Quantum-Safe Algorithms in DNSSEC
 
-4.  IANA Considerations
+   Certain cryptographic algorithms have been identified as being to
+   weak to withstand cryptanalytic attack by a quantum computer.
+   Examples of such algorithms used in DNSSEC are ECDSA Curve P-256 with
+   SHA-256 [RFC6605] and RSA/SHA-256 [RFC5702].  In this document we
+   refer to such algorithms as quantum-unsafe.
+
+   However, there exist other algorithms that have been classified as
+   quantum-safe by some authorities, such as Module-Lattice-Based
+   Digital Signature Standard {?FIPS204} whose use in DNSSEC as ML-
+   DSA-44 is described in [I-D.westerbaan-dnssec-mldsa].
+
+   Quantum-safe algorithms are not widely-deployed in DNSSEC at the time
+   of writing, and there is no known prediction of their rapid
+   deployment.  DNSSEC validators are required to ignore signatures made
+   using algorithms that they do not support.
+
+   To publish data in the DNS with broad integrity protection for
+   relying parties that includes the use of quantum-safe algorithms, it
+   is therefore necessary to include multiple signatures over the
+   subject data: signatures with widely-deployed, quantum-unsafe
+   algorithms for the legacy population of validators and also
+   signatures with poorly-deployed, quantum-safe algorithms intended for
+   validators that support them.  Signing with quantum-safe algorithms
+   alone would afford no integrity protection at all to the legacy
+   validator population.
+
+   The classsification of algorithms as quantum-safe or quantum-unsafe
+   imagines a future in which the ability to validate a signature made
+   by a quantum-unsafe algorithm no longer provides sufficient
+   confidence that the signed data is authentic.  However, a signature
+   over the same data by a quantum-safe algorithm would provide that
+   confidence, to a validator that is equipped to use it.
+
+   Such a validator might therefore implement a local policy to ignore
+   signatures made using quantum-unsafe algorithms when signatures made
+   by quantum-safe algorithms are also available for the same subject
+   data.  Such a policy would treat data with a valid quantum-safe
+   signature as authentic regardless of the validity of any other
+   signature, and treat data with an invalid quantum-safe signature as
+   inauthentic even if valid signatures made by quantum-unsafe
+   algorithms are available.
+
+   The operator of a security-aware resolver that adopted this local
+   policy would naturally pay close attention to the concerns expressed
+   in Section 4.2.1.2 of [RFC6781].
+
+5.  Signals to Relying Parties
+
+   The local policy described in Section 4 would have the effect of
+   suppressing DNS responses that might otherwise have been returned to
+   a client in the specific case where validation of a quantum-unsafe
+   signature succeded while validation of a quantum-safe signature over
+   the same data did not.
+
+   To the end-user, this is an example of DNS response filtering and
+   existing mechanisms described in
+   [I-D.ietf-dnsop-filtering-transparency] can be used.  For example, a
+   negative DNS response that follows a failure to validate according to
+   this local policy mnight include an Extended DNS Error Code 6
+   ("DNSSEC Bogus") [RFC8914] and an EXTRA-TEXT Field "fbds" which is an
+   array of appropriate references that describe the local policy:
+
+   {
+     "fbds": [
+       {
+         "db": "resolver-operator-reference",
+         "id": "quantum-safe-validation-policy"
+       }
+     ]
+   }
+
+6.  Security Considerations
+
+   This document provides an example of local policy relating to DNSSEC
+   validation that could be employed by the operator of a security-aware
+   resolver to address weaknesses in quantum-unsafe signing algorithms.
+
+   Local policy is often no friend of interoperability.  In this case
+   the parties affected by local policy decisions might well have made
+   an informed decision to use a resolver with known local policy, in
+   which case resulting differences in validation behaviour will
+   presumably be well-aligned with the relying parties.  However,
+   particular resolvers are also commonly assigned to devices without an
+   informed decision-making process with an end user, in which case
+   differences in behaviour might be surprising.
+
+   The Extended DNS Error described in Section 5} provides a mechanism
+   for a resolver operator to communicate the existence of local policy
+   to a client such that the reason for the different behaviour can be
+   better understood.
+
+7.  IANA Considerations
 
    This document has no IANA actions.
 
-5.  Normative References
+8.  References
 
-   [RFC2119]  Bradner, S., "Key words for use in RFCs to Indicate
-              Requirement Levels", BCP 14, RFC 2119,
-              DOI 10.17487/RFC2119, March 1997,
-              <https://www.rfc-editor.org/rfc/rfc2119>.
+8.1.  Normative References
 
-   [RFC8174]  Leiba, B., "Ambiguity of Uppercase vs Lowercase in RFC
-              2119 Key Words", BCP 14, RFC 8174, DOI 10.17487/RFC8174,
-              May 2017, <https://www.rfc-editor.org/rfc/rfc8174>.
+   [I-D.ietf-dnsop-filtering-transparency]
+              Nottingham, M. and D. Adrian, "DNS Filtering
+              Transparency", Work in Progress, Internet-Draft, draft-
+              ietf-dnsop-filtering-transparency-00, 1 August 2026,
+              <https://datatracker.ietf.org/doc/html/draft-ietf-dnsop-
+              filtering-transparency-00>.
+
+   [RFC4035]  Arends, R., Austein, R., Larson, M., Massey, D., and S.
+              Rose, "Protocol Modifications for the DNS Security
+              Extensions", RFC 4035, DOI 10.17487/RFC4035, March 2005,
+              <https://www.rfc-editor.org/rfc/rfc4035>.
+
+   [RFC6781]  Kolkman, O., Mekking, W., and R. Gieben, "DNSSEC
+              Operational Practices, Version 2", RFC 6781,
+              DOI 10.17487/RFC6781, December 2012,
+              <https://www.rfc-editor.org/rfc/rfc6781>.
+
+   [RFC6840]  Weiler, S., Ed. and D. Blacka, Ed., "Clarifications and
+              Implementation Notes for DNS Security (DNSSEC)", RFC 6840,
+              DOI 10.17487/RFC6840, February 2013,
+              <https://www.rfc-editor.org/rfc/rfc6840>.
+
+   [RFC8914]  Kumari, W., Hunt, E., Arends, R., Hardaker, W., and D.
+              Lawrence, "Extended DNS Errors", RFC 8914,
+              DOI 10.17487/RFC8914, October 2020,
+              <https://www.rfc-editor.org/rfc/rfc8914>.
+
+   [RFC9364]  Hoffman, P., "DNS Security Extensions (DNSSEC)", BCP 237,
+              RFC 9364, DOI 10.17487/RFC9364, February 2023,
+              <https://www.rfc-editor.org/rfc/rfc9364>.
+
+   [RFC9499]  Hoffman, P. and K. Fujiwara, "DNS Terminology", BCP 219,
+              RFC 9499, DOI 10.17487/RFC9499, March 2024,
+              <https://www.rfc-editor.org/rfc/rfc9499>.
+
+8.2.  Informative References
+
+   [FIPS204]  National Institute of Standards and Technology (NIST),
+              "Module-Lattice-Based Digital Signature Standard",
+              FIPS PUB 204, August 2024,
+              <https://doi.org/10.6028/NIST.FIPS.204>.
+
+   [I-D.westerbaan-dnssec-mldsa]
+              Westerbaan, B. and S. Schmieg, "Module-Lattice Digital
+              Signature Algorithm for DNSSEC", Work in Progress,
+              Internet-Draft, draft-westerbaan-dnssec-mldsa-03, 4 August
+              2026, <https://datatracker.ietf.org/doc/html/draft-
+              westerbaan-dnssec-mldsa-03>.
+
+   [RFC5702]  Jansen, J., "Use of SHA-2 Algorithms with RSA in DNSKEY
+              and RRSIG Resource Records for DNSSEC", RFC 5702,
+              DOI 10.17487/RFC5702, October 2009,
+              <https://www.rfc-editor.org/rfc/rfc5702>.
+
+   [RFC6605]  Hoffman, P. and W.C.A. Wijngaards, "Elliptic Curve Digital
+              Signature Algorithm (DSA) for DNSSEC", RFC 6605,
+              DOI 10.17487/RFC6605, April 2012,
+              <https://www.rfc-editor.org/rfc/rfc6605>.
 
 Acknowledgments
 
-   TODO acknowledge.
+   Your name here, etc.
 
 Author's Address
 
-   Your Name Here
-   Your Organization Here
-   Email: your.email@example.com
+   Joe Abley
+   Cloudflare
+   Email: jabley@cloudflare.com
