@@ -84,7 +84,7 @@ follows:
 >    properly signed data might unnecessarily fail validation due to cache
 >    timing issues.  Furthermore, certain zone management techniques, like
 >    the Double Signature Zone Signing Key Rollover method described in
->    Section 4.2.1.2 of [RFC6781], will not work reliably.  Such a
+>    {{?Section 4.2.1.2 of RFC6781}}, will not work reliably.  Such a
 >    resolver is also vulnerable to malicious insertion of gibberish
 >    signatures.
 
