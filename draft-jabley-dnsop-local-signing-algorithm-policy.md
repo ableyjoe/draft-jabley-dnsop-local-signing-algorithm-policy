@@ -177,8 +177,8 @@ existing mechanisms described in {{!I-D.ietf-dnsop-filtering-transparency}}
 can be used. For example, a negative DNS response that follows a
 failure to validate according to this local policy mnight include
 an Extended DNS Error Code 6 ("DNSSEC Bogus") {{!RFC8914}} and
-an EXTRA-TEXT Field "fbds" which is an array of appropriate
-references that describe the local policy:
+include indirect references to the specific policy in force encoded in
+the EXTRA-TEXT field, for example:
 
 ~~~
 {
