@@ -63,7 +63,7 @@ been applied to response validation.
 
 # Introduction {#intro}
 
-DNS Security Extensions (DNSSEC) are specified in {{!RFC 9364}}.
+DNS Security Extensions (DNSSEC) are specified in {{!RFC9364}}.
 
 DNSSEC provides a mechanism for a subject RRSet to have cryptographic
 signatures attached. Signatures are encoded in a DNS message alongside
