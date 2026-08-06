@@ -1,8 +1,8 @@
 <!-- regenerate: on (set to off if you edit this file) -->
 
-# Supporting Quantum-Safe Algorithms in DNSSEC with Local Validation Policy
+# Supporting Quantum-Safe Algorithms in DNSSEC with Local Resolver Policy
 
-This is the working area for the individual Internet-Draft, "Supporting Quantum-Safe Algorithms in DNSSEC with Local Validation Policy".
+This is the working area for the individual Internet-Draft, "Supporting Quantum-Safe Algorithms in DNSSEC with Local Resolver Policy".
 
 * [Editor's Copy](https://ableyjoe.github.io/draft-jabley-dnsop-local-signing-algorithm-policy/#go.draft-jabley-dnsop-local-signing-algorithm-policy.html)
 * [Datatracker Page](https://datatracker.ietf.org/doc/draft-jabley-dnsop-local-signing-algorithm-policy)
