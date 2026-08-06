@@ -1,6 +1,6 @@
 ---
-title: "Reflecting Local Policy on Signing Algorithms in DNSSEC Signature Validation"
-abbrev: "TODO - Abbreviation"
+title: "Supporting Quantum-Safe Algorithms in DNSSEC with Local Validation Policy"
+abbrev: "Quantum-Safe Local Validation Policy for DNSSEC"
 category: info
 
 docname: draft-jabley-dnsop-local-signing-algorithm-policy-latest
