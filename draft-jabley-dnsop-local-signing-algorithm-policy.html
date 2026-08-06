@@ -1329,8 +1329,8 @@ existing mechanisms described in <span>[<a href="#I-D.ietf-dnsop-filtering-trans
 can be used. For example, a negative DNS response that follows a
 failure to validate according to this local policy mnight include
 an Extended DNS Error Code 6 ("DNSSEC Bogus") <span>[<a href="#RFC8914" class="cite xref">RFC8914</a>]</span> and
-an EXTRA-TEXT Field "fbds" which is an array of appropriate
-references that describe the local policy:<a href="#section-4-2" class="pilcrow">¶</a></p>
+include indirect references to the specific policy in force encoded in
+the EXTRA-TEXT field, for example:<a href="#section-4-2" class="pilcrow">¶</a></p>
 <div class="alignLeft art-text artwork" id="section-4-3">
 <pre>
 {
