@@ -84,14 +84,13 @@ Table of Contents
 
    1.  Introduction
    2.  Conventions and Definitions
-   3.  {::boilerplate bcp14-tagged}
-   4.  Deployment of Quantum-Safe Algorithms in DNSSEC
-   5.  Signals to Relying Parties
-   6.  Security Considerations
-   7.  IANA Considerations
-   8.  References
-     8.1.  Normative References
-     8.2.  Informative References
+   3.  Deployment of Quantum-Safe Algorithms in DNSSEC
+   4.  Signals to Relying Parties
+   5.  Security Considerations
+   6.  IANA Considerations
+   7.  References
+     7.1.  Normative References
+     7.2.  Informative References
    Acknowledgments
    Author's Address
 
@@ -139,11 +138,18 @@ Table of Contents
 
 2.  Conventions and Definitions
 
-3.  {::boilerplate bcp14-tagged}
-
    This document uses DNS terminology as described in [RFC9499].
 
-4.  Deployment of Quantum-Safe Algorithms in DNSSEC
+   This document applies the phrase "quantum-safe" to cryptographic
+   algorithms and signatures made by those algorithms in the loose sense
+   of offering acceptable protection against cryptanalyic attack by a
+   quantum computer.  This usage is consistent with general,
+   contemporary discussion of so-called post-quantum cryptography.
+
+   This document uses the phrase "quantum-unsafe" to mean something that
+   is not quantum-safe.
+
+3.  Deployment of Quantum-Safe Algorithms in DNSSEC
 
    Certain cryptographic algorithms have been identified as being to
    weak to withstand cryptanalytic attack by a quantum computer.
@@ -151,10 +157,10 @@ Table of Contents
    SHA-256 [RFC6605] and RSA/SHA-256 [RFC5702].  In this document we
    refer to such algorithms as quantum-unsafe.
 
-   However, there exist other algorithms that have been classified as
-   quantum-safe by some authorities, such as Module-Lattice-Based
-   Digital Signature Standard {?FIPS204} whose use in DNSSEC as ML-
-   DSA-44 is described in [I-D.westerbaan-dnssec-mldsa].
+   However, there exist other algorithms that are considered quantum-
+   safe, such as Module-Lattice-Based Digital Signature Standard
+   {?FIPS204} whose use in DNSSEC as ML-DSA-44 is described in
+   [I-D.westerbaan-dnssec-mldsa].
 
    Quantum-safe algorithms are not widely-deployed in DNSSEC at the time
    of writing, and there is no known prediction of their rapid
@@ -191,9 +197,9 @@ Table of Contents
    policy would naturally pay close attention to the concerns expressed
    in Section 4.2.1.2 of [RFC6781].
 
-5.  Signals to Relying Parties
+4.  Signals to Relying Parties
 
-   The local policy described in Section 4 would have the effect of
+   The local policy described in Section 3 would have the effect of
    suppressing DNS responses that might otherwise have been returned to
    a client in the specific case where validation of a quantum-unsafe
    signature succeded while validation of a quantum-safe signature over
@@ -216,7 +222,7 @@ Table of Contents
      ]
    }
 
-6.  Security Considerations
+5.  Security Considerations
 
    This document provides an example of local policy relating to DNSSEC
    validation that could be employed by the operator of a security-aware
@@ -231,18 +237,18 @@ Table of Contents
    informed decision-making process with an end user, in which case
    differences in behaviour might be surprising.
 
-   The Extended DNS Error described in Section 5} provides a mechanism
+   The Extended DNS Error described in Section 4} provides a mechanism
    for a resolver operator to communicate the existence of local policy
    to a client such that the reason for the different behaviour can be
    better understood.
 
-7.  IANA Considerations
+6.  IANA Considerations
 
    This document has no IANA actions.
 
-8.  References
+7.  References
 
-8.1.  Normative References
+7.1.  Normative References
 
    [I-D.ietf-dnsop-filtering-transparency]
               Nottingham, M. and D. Adrian, "DNS Filtering
@@ -279,7 +285,7 @@ Table of Contents
               RFC 9499, DOI 10.17487/RFC9499, March 2024,
               <https://www.rfc-editor.org/rfc/rfc9499>.
 
-8.2.  Informative References
+7.2.  Informative References
 
    [FIPS204]  National Institute of Standards and Technology (NIST),
               "Module-Lattice-Based Digital Signature Standard",
