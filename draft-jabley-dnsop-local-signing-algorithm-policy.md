@@ -71,7 +71,7 @@ the subject RRSet as an RRSIG RRSet with the same owner name, TTL
 and class. Different RRSIG RRs in such an RRSet might correspond
 to different signing keys and different signing algorithms.
 
-In {{!Section 5.3.3 of RFC4035}} the process for determining the
+In {{Section 5.3.3 of !RFC4035}} the process for determining the
 authenticity of an RRSet with more than one associated signature (RRSIG)
 is considered. The specification {{!RFC4035}} defers the matter of
 whether every RRSIG needs to be checked individually to local policy:
@@ -81,7 +81,7 @@ whether every RRSIG needs to be checked individually to local policy:
 >   RRs and how to resolve conflicts if these RRSIG RRs lead to differing
 >   results.
 
-This guidance is further clarified in {{!Section 5.4 of RFC6840}} as
+This guidance is further clarified in {{Section 5.4 of !RFC6840}} as
 follows:
 
 >    This document specifies that a resolver SHOULD accept any valid RRSIG
@@ -92,7 +92,7 @@ follows:
 >    properly signed data might unnecessarily fail validation due to cache
 >    timing issues.  Furthermore, certain zone management techniques, like
 >    the Double Signature Zone Signing Key Rollover method described in
->    {{?Section 4.2.1.2 of RFC6781}}, will not work reliably.  Such a
+>    {{Section 4.2.1.2 of ?RFC6781}}, will not work reliably.  Such a
 >    resolver is also vulnerable to malicious insertion of gibberish
 >    signatures.
 
@@ -155,9 +155,9 @@ algorithms are available.
 
 The operator of a security-aware resolver that adopted this local
 policy would naturally pay close attention to the concerns expressed
-in {{?Section 4.2.1.2 of RFC6781}}.
+in {{Section 4.2.1.2 of !RFC6781}}.
 
-# Signals to Relying Parties
+# Signals to Relying Parties {#filtered_ede}
 
 The local policy described in {{local_policy}} would have the effect
 of suppressing DNS responses that might otherwise have been returned
@@ -200,10 +200,10 @@ particular resolvers are also commonly assigned to devices without
 an informed decision-making process with an end user, in which case
 differences in behaviour might be surprising.
 
-The Extended DNS Error described in {{ede}}} provides a mechanism
-for a resolver operator to communicate the existence of local policy
-to a client such that the reason for the different behaviour can
-be better understood.
+The Extended DNS Error described in {{filtered_ede}}} provides a
+mechanism for a resolver operator to communicate the existence of
+local policy to a client such that the reason for the different
+behaviour can be better understood.
 
 # IANA Considerations
 
