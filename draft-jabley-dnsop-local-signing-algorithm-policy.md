@@ -9,19 +9,19 @@ number:
 date:
 consensus: true
 v: 3
-area: AREA
-workgroup: WG Working Group
+area: "Operations and Management"
+workgroup: "Domain Name System Operations"
 keyword:
  - next generation
  - unicorn
  - AI-native
 venue:
-  group: WG
-  type: Working Group
-  mail: WG@example.com
-  arch: https://example.com/WG
-  github: USER/REPO
-  latest: https://example.com/LATEST
+  group: "Domain Name System Operations"
+  type: "Working Group"
+  mail: "dnsop@ietf.org"
+  arch: "https://mailarchive.ietf.org/arch/browse/dnsop/"
+  github: "ableyjoe/draft-jabley-dnsop-local-signing-algorithm-policy"
+  latest: "https://ableyjoe.github.io/draft-jabley-dnsop-local-signing-algorithm-policy/draft-jabley-dnsop-local-signing-algorithm-policy.html"
 
 author:
  -
